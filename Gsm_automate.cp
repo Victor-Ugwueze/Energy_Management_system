@@ -2,22 +2,35 @@
 int counter=0;
 char msg = '0';
 int intrude=0;
-char people[13]="";
+char people[]="";
 int i=0;
-char sms[] = "Yes\r\n";
+char sms[] = "Yes";
 void Initialization()
 {
 UART1_Init(9600);
 }
-#line 25 "C:/Users/GOZMAN VICTOR/Desktop/Gsm_PIC/Gsm_automate.c"
-void SendSms(){
+
+
+void numberOfPeople(char *pop,char hund, char tens, char unit){
+ while(*pop){
+ people[i]=*pop;
+ *pop++;
+ i++;
+ }
+ people[11]= hund;
+ people[12]= tens;
+ people[13]= unit;
+
+}
+
+void SendSms(char *sms){
 UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
 delay_ms(500);
-UART1_Write_Text("Welcome");
 
 
-
-
+while(*sms){
+UART1_Write(*sms++);
+}
 delay_ms(100);
 
 UART1_Write(26);
@@ -59,7 +72,7 @@ UART1_Write_Text("AT\r\n");
 Delay_ms(1000);
 UART1_Write_Text("AT+CMGF=1\r\n");
 delay_ms(1000);
-SendSms();
+SendSms(sms);
 
 do
 {
