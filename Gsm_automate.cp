@@ -2,7 +2,7 @@
 int counter=0;
 char msg = '0';
 int intrude=0;
-char people[]="";
+char people[18]={'0'};
 int i=0;
 char sms[] = "Yes";
 void Initialization()
@@ -12,14 +12,19 @@ UART1_Init(9600);
 
 
 void numberOfPeople(char *pop,char hund, char tens, char unit){
+ people[0]= hund;
+ people[1]= tens;
+ people[2]= unit;
+ people[3]= ' ';
+ i=4;
  while(*pop){
  people[i]=*pop;
  *pop++;
  i++;
  }
- people[11]= hund;
- people[12]= tens;
- people[13]= unit;
+ people[i]= '\0';
+
+
 
 }
 
@@ -64,7 +69,7 @@ msg='0';
 delay_ms(5000);
 delay_ms(5000);
 Initialization();
-
+numberOfPeople("Persons inside",'2','3','4');
 Delay_ms(2000);
 UART1_Write_Text("ATE0\r\n");
 Delay_ms(1000);
@@ -72,8 +77,7 @@ UART1_Write_Text("AT\r\n");
 Delay_ms(1000);
 UART1_Write_Text("AT+CMGF=1\r\n");
 delay_ms(1000);
-SendSms(sms);
-
+SendSms(people);
 do
 {
 
