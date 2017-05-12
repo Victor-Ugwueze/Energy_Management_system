@@ -1,7 +1,8 @@
 #line 1 "C:/Users/GOZMAN VICTOR/Desktop/Gsm_PIC/Gsm_automate.c"
-int counter=0;
+char counter=150;
 char msg = '0';
 int intrude=0;
+char hun=2,tens=3,unit=4 ;
 char people[18]={'0'};
 int i=0;
 char sms[] = "Yes";
@@ -11,10 +12,10 @@ UART1_Init(9600);
 }
 
 
-void numberOfPeople(char *pop,char hund, char tens, char unit){
- people[0]= hund;
- people[1]= tens;
- people[2]= unit;
+void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
+ people[0]= dig3+48;
+ people[1]= dig2+48;
+ people[2]= dig1+48;
  people[3]= ' ';
  i=4;
  while(*pop){
@@ -30,27 +31,35 @@ void numberOfPeople(char *pop,char hund, char tens, char unit){
 }
 
 void SendSms(char *sms){
+UART1_Write_Text("ATE0\r\n");
+Delay_ms(1000);
+UART1_Write_Text("AT\r\n");
+delay_ms(1000);
+UART1_Write_Text("AT+CMGF=1\r\n");
+delay_ms(1000);
 UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
 delay_ms(500);
-
-
 while(*sms){
 UART1_Write(*sms++);
 }
-delay_ms(100);
 
 UART1_Write(26);
 }
 
  void getNumberOfPerson(){
- if(rc0_bit==1){
-counter++;
-} while(rc0_bit==1);
 
-if(rc1_bit==1&&counter>0){
-counter--;
-}while(rc1_bit==1);
+
+
+
+
+
+
+
+ hun=counter/100;
+ tens= (counter%100)/10;
+ unit= counter%10;
 }
+
 
 char receiveMsg(){
  UART1_Write_Text("AT+CNMI=2,2,0,0,0\r\n");
@@ -66,26 +75,14 @@ char receiveMsg(){
 }
 
 void main() {
-msg='0';
-delay_ms(5000);
+char v=0;
 delay_ms(5000);
 Initialization();
-numberOfPeople("Persons inside",'2','3','4');
-Delay_ms(2000);
-UART1_Write_Text("ATE0\r\n");
-Delay_ms(1000);
-UART1_Write_Text("AT\r\n");
-Delay_ms(1000);
-UART1_Write_Text("AT+CMGF=1\r\n");
-delay_ms(1000);
-SendSms(people);
+delay_ms(3000);
+numberOfPeople("Persons inside",hun,tens,unit);
 do
 {
-
-
-
-
-
-
-} while(1);
+SendSms(people);
+v++;
+} while(v<=0);
 }

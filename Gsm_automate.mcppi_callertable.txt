@@ -4,8 +4,6 @@ main
 	Initialization
 		UART1_Init
 	numberOfPeople
-	UART1_Write_Text
-		UART1_Write
 	SendSms
 		UART1_Write_Text
 			UART1_Write
