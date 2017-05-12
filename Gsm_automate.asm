@@ -60,11 +60,14 @@ L_numberOfPeople0:
 ;Gsm_automate.c,23 :: 		}
 	GOTO       L_numberOfPeople0
 L_numberOfPeople1:
-;Gsm_automate.c,24 :: 		people[i]= '\0';
+;Gsm_automate.c,24 :: 		people[i++]= '\0';
 	MOVF       _i+0, 0
 	ADDLW      _people+0
 	MOVWF      FSR
 	CLRF       INDF+0
+	INCF       _i+0, 1
+	BTFSC      STATUS+0, 2
+	INCF       _i+1, 1
 ;Gsm_automate.c,28 :: 		}
 L_end_numberOfPeople:
 	RETURN

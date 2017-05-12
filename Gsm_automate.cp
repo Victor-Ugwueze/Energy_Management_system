@@ -22,7 +22,7 @@ void numberOfPeople(char *pop,char hund, char tens, char unit){
  *pop++;
  i++;
  }
- people[i]= '\0';
+ people[i++]= '\0';
 
 
 
