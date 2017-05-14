@@ -4,13 +4,92 @@ char msg = '0';
 int intrude=0;
 char hun=2,tens=3,unit=4 ;
 char people[18]={'0'};
-int i=0;
-char sms[] = "Yes";
+char i=0,j=0;
+char success=0;
+char getNum=0;
+char extractMsg=0;
+
 void Initialization()
 {
-UART1_Init(9600);
+ UART1_Init(9600);
+ delay_ms(5000);
+ UART1_Write_Text("ATE0\r\n");
+ Delay_ms(1000);
+ UART1_Write_Text("AT+CMGF=1\r\n");
+ delay_ms(1000);
+ UART1_Write_Text("AT+CNMI=2,2,0,0,0\r\n");
+ delay_ms(1000);
 }
 
+void SendSms(char *sms){
+UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
+delay_ms(500);
+while(*sms){
+UART1_Write(*sms++);
+}
+
+UART1_Write(26);
+}
+
+
+ void getAction(char *people){
+
+ if (UART1_Data_Ready()==1){
+ switch(UART1_read()){
+ case ':' :
+ j++;
+ if(j==3){
+
+
+ }
+
+
+ break;
+ case '\r':
+ if(j==3){
+ success=1;
+
+ j=0;
+
+ }
+ break;
+
+ case '*':
+ if(success==1){
+ success=0;
+ extractMsg=1;
+ }
+ break;
+
+ case '2':
+ if(extractMsg==1){
+ extractMsg=0;
+ getNum=2;}
+ break;
+
+ case '3':
+ if(extractMsg==1){
+ extractMsg=0;
+ getNum=3;}
+ break;
+
+ case '1':
+ if(extractMsg==1){
+ extractMsg=0;
+ getNum=1;}
+ break;
+ }
+
+
+
+ }
+
+ if(getNum==3){
+ sendSms(people);
+ getNum=0;
+ }
+
+ }
 
 void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
  people[0]= dig3+48;
@@ -30,21 +109,7 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
 
 }
 
-void SendSms(char *sms){
-UART1_Write_Text("ATE0\r\n");
-Delay_ms(1000);
-UART1_Write_Text("AT\r\n");
-delay_ms(1000);
-UART1_Write_Text("AT+CMGF=1\r\n");
-delay_ms(1000);
-UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
-delay_ms(500);
-while(*sms){
-UART1_Write(*sms++);
-}
 
-UART1_Write(26);
-}
 
  void getNumberOfPerson(){
 
@@ -61,28 +126,15 @@ UART1_Write(26);
 }
 
 
-char receiveMsg(){
- UART1_Write_Text("AT+CNMI=2,2,0,0,0\r\n");
- delay_ms(1000);
- if (UART1_Data_Ready())
- {
- msg = UART1_Read();
 
- }
-
- return msg;
-
-}
 
 void main() {
-char v=0;
-delay_ms(5000);
+getNum=0;
 Initialization();
-delay_ms(3000);
 numberOfPeople("Persons inside",hun,tens,unit);
+
 do
 {
-SendSms(people);
-v++;
-} while(v<=0);
+getAction(people);
+} while(1);
 }
