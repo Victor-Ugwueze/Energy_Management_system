@@ -1,4 +1,6 @@
 #line 1 "C:/Users/GOZMAN VICTOR/Desktop/Gsm_PIC/Gsm_automate.c"
+
+
 char counter=150;
 char msg = '0';
 int intrude=0;
@@ -8,6 +10,8 @@ char i=0,j=0;
 char success=0;
 char getNum=0;
 char extractMsg=0;
+
+
 
 void Initialization()
 {
@@ -22,13 +26,13 @@ void Initialization()
 }
 
 void SendSms(char *sms){
-UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
-delay_ms(500);
-while(*sms){
-UART1_Write(*sms++);
-}
+ UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
+ delay_ms(500);
+ while(*sms){
+ UART1_Write(*sms++);
+ }
 
-UART1_Write(26);
+ UART1_Write(26);
 }
 
 
@@ -112,14 +116,13 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
 
 
  void getNumberOfPerson(){
+ if(rc0_bit==1){
+ counter++;
+ }while(rc0_bit==1);
 
-
-
-
-
-
-
-
+ if(rc1_bit==1&&counter>0){
+ counter--;
+ }while(rc1_bit==1);
  hun=counter/100;
  tens= (counter%100)/10;
  unit= counter%10;
@@ -129,13 +132,15 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
 
 
 void main() {
-getNum=0;
-Initialization();
+ rc0_bit=1;
+ rc1_bit=1;
+ getNum=0;
+ Initialization();
 
-do
-{
-getNumberOfPerson();
-numberOfPeople("Persons inside",hun,tens,unit);
-getAction(people);
-} while(1);
+ do
+ {
+ getNumberOfPerson();
+ numberOfPeople("Persons inside",hun,tens,unit);
+ getAction(people);
+ } while(1);
 }

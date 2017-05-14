@@ -1,3 +1,5 @@
+
+
 char counter=150;
 char msg = '0';
 int intrude=0;
@@ -7,12 +9,14 @@ char i=0,j=0;
 char success=0;
 char getNum=0;
 char extractMsg=0;
+
+
 //char sms[] = "Yes";
 void Initialization()
 {
      UART1_Init(9600);   // Initialize Serial Port at 9600 baud rate
-  delay_ms(5000);
-       UART1_Write_Text("ATE0\r\n");   // AT command for Echo OFF
+     delay_ms(5000);
+     UART1_Write_Text("ATE0\r\n");
      Delay_ms(1000);
      UART1_Write_Text("AT+CMGF=1\r\n");
      delay_ms(1000);
@@ -21,13 +25,13 @@ void Initialization()
 }
 
 void SendSms(char *sms){
-UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
-delay_ms(500);
-while(*sms){
-UART1_Write(*sms++);
-}
+  UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
+  delay_ms(500);
+  while(*sms){
+    UART1_Write(*sms++);
+  }
 
-UART1_Write(26);
+  UART1_Write(26);
 }
 
 
@@ -111,14 +115,13 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
 
 
  void getNumberOfPerson(){     // Motion Sensor Code
-// if(rc0_bit==1){
-//  counter++;
-//} while(rc0_bit==1);
-//
-//if(rc1_bit==1&&counter>0){
-//  counter--;
-//}while(rc1_bit==1);
+ if(rc0_bit==1){
+  counter++;
+ }while(rc0_bit==1);
 
+ if(rc1_bit==1&&counter>0){
+   counter--;
+ }while(rc1_bit==1);
   hun=counter/100;
   tens= (counter%100)/10;
   unit= counter%10;
@@ -128,13 +131,15 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
 
 
 void main() {
-getNum=0;
-Initialization();
-//SendSms("You Entered Three OutSide");
-do
-{
-getNumberOfPerson();
-numberOfPeople("Persons inside",hun,tens,unit);
-getAction(people);
-} while(1);
+  rc0_bit=1;
+  rc1_bit=1;
+  getNum=0;
+  Initialization();
+  //SendSms("You Entered Three OutSide");
+  do
+  {
+    getNumberOfPerson();
+    numberOfPeople("Persons inside",hun,tens,unit);
+    getAction(people);
+  } while(1);
 }
