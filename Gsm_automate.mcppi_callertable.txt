@@ -5,6 +5,8 @@ main
 		UART1_Init
 		UART1_Write_Text
 			UART1_Write
+	getNumberOfPerson
+		Div_8x8_U
 	numberOfPeople
 	getAction
 		UART1_Data_Ready

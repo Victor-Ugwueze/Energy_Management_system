@@ -400,7 +400,11 @@ _main:
 	CLRF       _getNum+0
 ;Gsm_automate.c,132 :: 		Initialization();
 	CALL       _Initialization+0
-;Gsm_automate.c,133 :: 		numberOfPeople("Persons inside",hun,tens,unit);
+;Gsm_automate.c,134 :: 		do
+L_main25:
+;Gsm_automate.c,136 :: 		getNumberOfPerson();
+	CALL       _getNumberOfPerson+0
+;Gsm_automate.c,137 :: 		numberOfPeople("Persons inside",hun,tens,unit);
 	MOVLW      ?lstr5_Gsm_automate+0
 	MOVWF      FARG_numberOfPeople_pop+0
 	MOVF       _hun+0, 0
@@ -410,15 +414,13 @@ _main:
 	MOVF       _unit+0, 0
 	MOVWF      FARG_numberOfPeople_dig1+0
 	CALL       _numberOfPeople+0
-;Gsm_automate.c,135 :: 		do
-L_main25:
-;Gsm_automate.c,137 :: 		getAction(people);
+;Gsm_automate.c,138 :: 		getAction(people);
 	MOVLW      _people+0
 	MOVWF      FARG_getAction_people+0
 	CALL       _getAction+0
-;Gsm_automate.c,138 :: 		} while(1);
+;Gsm_automate.c,139 :: 		} while(1);
 	GOTO       L_main25
-;Gsm_automate.c,139 :: 		}
+;Gsm_automate.c,140 :: 		}
 L_end_main:
 	GOTO       $+0
 ; end of _main

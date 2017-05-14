@@ -130,10 +130,11 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
 void main() {
 getNum=0;
 Initialization();
-numberOfPeople("Persons inside",hun,tens,unit);
 //SendSms("You Entered Three OutSide");
 do
 {
+getNumberOfPerson();
+numberOfPeople("Persons inside",hun,tens,unit);
 getAction(people);
 } while(1);
 }
