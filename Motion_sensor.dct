@@ -367,6 +367,7 @@ delay_5ms
 delay_80us
 delay_8ms
 delay_cyc
+display
 div
 div_16x16_s
 div_16x16_s_l
@@ -413,7 +414,6 @@ expander_write_byte
 expander_write_porta
 expander_write_portab
 expander_write_portb
-extractmsg
 f
 fabs
 ferr
@@ -434,12 +434,9 @@ frexp
 fsr
 fsrptr
 fullbits
-gasmsg
 gcen
 gcen_bit
 get_fosc_khz
-getaction
-getnum
 gie
 gie_bit
 glcd_box
@@ -479,8 +476,7 @@ go_done_bit
 go_not_done
 go_not_done_bit
 halfbits
-hun
-i
+hund
 i2c_data
 i2c_data_bit
 i2c_read
@@ -505,9 +501,7 @@ ibov_trise_bit
 ics_auto
 ics_off
 in_success
-inc
 indf
-initialization
 int2double
 intcon
 inte
@@ -516,7 +510,6 @@ intedg
 intedg_bit
 intf
 intf_bit
-intrude
 inttohex
 inttostr
 inttostrwithzeros
@@ -532,7 +525,7 @@ ispunct
 isspace
 isupper
 isxdigit
-j
+k
 keypad_init
 keypad_key_click
 keypad_key_press
@@ -582,7 +575,6 @@ mm_nrfreeblocksused
 mm_possiblyfragmented
 mm_totalfreememsize
 modf
-msg
 mul_16x16_s
 mul_16x16_u
 mul_32x32_fp
@@ -621,7 +613,6 @@ not_write_bit
 nr_free_blocks
 nrm3232
 nrm4032
-numberofpeople
 obf
 obf_bit
 obf_trise_bit
@@ -649,7 +640,6 @@ peie
 peie_bit
 pen
 pen_bit
-people
 pie1
 pie2
 pir1
@@ -886,9 +876,6 @@ s1d13700_write_text_return_pos
 sdiv3232l
 sen
 sen_bit
-sendsms
-sensedigital
-sensegas
 sensemotion
 setfdz32
 setfov32
@@ -1131,7 +1118,6 @@ strspn
 strstr
 strtok
 sub_32x32_fp
-success
 swap
 sync
 sync_bit
@@ -1226,6 +1212,7 @@ tmr2if_bit
 tmr2on
 tmr2on_bit
 tolower
+tou
 toupper
 toutps0
 toutps0_bit
@@ -1359,6 +1346,7 @@ wren_bit
 wrerr
 wrerr_bit
 x
+x1
 xtoi
 z
 z_bit

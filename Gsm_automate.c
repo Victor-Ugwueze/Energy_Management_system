@@ -1,6 +1,14 @@
+#define  button_plus rc4_bit    //pins for motion sensor
+#define  button_minus rc3_bit
+typedef char c;
+char seven_seg[10]={63,6,91,79,102,109,125,7,127,111};
+const char gasMsg[28]= "Gas leakage in the building";
 
-
-char counter=150;
+int cnt=0,inc=0;
+char in_success = 0;
+char out_success= 0;
+char counter = 0;
+int x;
 char msg = '0';
 int intrude=0;
 char hun=2,tens=3,unit=4 ;
@@ -9,9 +17,8 @@ char i=0,j=0;
 char success=0;
 char getNum=0;
 char extractMsg=0;
+int  senseDigital=0;
 
-
-//char sms[] = "Yes";
 void Initialization()
 {
      UART1_Init(9600);   // Initialize Serial Port at 9600 baud rate
@@ -24,36 +31,33 @@ void Initialization()
      delay_ms(1000);
 }
 
-void SendSms(char *sms){
+void SendSms(const char *sms){
   UART1_Write_Text("AT+CMGS=\"+2348108893403\"\r\n");
   delay_ms(500);
   while(*sms){
     UART1_Write(*sms++);
   }
-
   UART1_Write(26);
 }
 
 
  void getAction(char *people){
-// SendSms("You Entered Three Inside");
        if (UART1_Data_Ready()==1){
        switch(UART1_read()){
         case ':' :
             j++;
               if(j==3){
-//                 SendSms("About Success");
+               j==0;
                  
               }
-//             SendSms("You Entered Three Inside");
-//            Serial.print("One");
+
             break;
         case '\r':
            if(j==3){
               success=1;
-//              SendSms("Success");
+
               j=0;
-//
+
              }
            break;
 
@@ -86,10 +90,9 @@ void SendSms(char *sms){
 
 
       }
-      
       if(getNum==3){
-                   sendSms(people);
-                   getNum=0;
+//         sendSms(people);
+         getNum=0;
       }
  
  }
@@ -108,38 +111,84 @@ void numberOfPeople(char *pop,char dig3, char dig2, char dig1){
      people[i]= ' ';
      people[i+=2]= '\0';
 
-     
+
 
 }
 
 
 
- void getNumberOfPerson(){     // Motion Sensor Code
- if(rc0_bit==1){
-  counter++;
- }while(rc0_bit==1);
 
- if(rc1_bit==1&&counter>0){
-   counter--;
- }while(rc1_bit==1);
-  hun=counter/100;
-  tens= (counter%100)/10;
-  unit= counter%10;
-}
+
+ void senseGas(){
+    senseDigital = adc_read(0);
+     if(senseDigital >=270){
+//         sendSms("Smoke in the building");
+    }  else if(senseDigital>400) {
+        sendSms(gasMsg);
+    }
+ }
+
+
+
+void display();
+ void SenseMotion(){
+      if(button_plus==1){
+         in_success=1;
+       }while(button_plus==1);
+       if(button_minus==1){
+          out_success=1;
+       }while(button_minus==1);
+ }
+
+     void Calculate_number(){
+              SenseMotion();
+              if((in_success==1) &&out_success==0 ){
+                  for(x=0;x<500;x++){
+                    SenseMotion();
+                    if(out_success==1){
+                      counter++;
+                     out_success=0;
+                     in_success=0;
+                     break;
+                    }
+                 }
+              }
+
+              if((out_success==1) && in_success==0){
+                  for(x=0;x<500;x++){
+                    SenseMotion();
+                    if(in_success==1){
+                      if(counter>0)counter--;
+                      out_success=0;
+                      in_success=0;
+                       break;
+                    }
+                 }
+              }
+
+         }
 
 
 
 
 void main() {
-  rc0_bit=1;
-  rc1_bit=1;
+ portb=0;
+   portd=0;
+   trisd=0;
+   trisb=0x00;
+   trisc4_bit=1;
+   trisc3_bit=1;
   getNum=0;
   Initialization();
-  //SendSms("You Entered Three OutSide");
-  do
-  {
-    getNumberOfPerson();
+  delay_ms(4000);
+ do
+{
     numberOfPeople("Persons inside",hun,tens,unit);
     getAction(people);
-  } while(1);
+    senseGas();
+    SenseMotion();
+    Calculate_number();
+    portb=seven_seg[counter];
+    portd=0xff;
+  }while(1);
 }

@@ -5,13 +5,18 @@ main
 		UART1_Init
 		UART1_Write_Text
 			UART1_Write
-	getNumberOfPerson
-		Div_8x8_U
 	numberOfPeople
 	getAction
 		UART1_Data_Ready
 		UART1_Read
+	senseGas
+		ADC_Read
+			Delay_22us
 		SendSms
 			UART1_Write_Text
 				UART1_Write
+			____DoICP
 			UART1_Write
+	SenseMotion
+	Calculate_number
+		SenseMotion
